@@ -1,6 +1,6 @@
-import React from 'react'
-import "../styles/Navbar.css"
-import Logo from "../assets/logo.png"
+import React from "react";
+import "../styles/Navbar.css";
+import Logo from "../assets/logo.png";
 
 const Navbar = () => {
   return (
@@ -17,12 +17,11 @@ const Navbar = () => {
             <li>Upload</li>
           </ul>
 
-          <button id='login-btn'>Login</button>
+          <button id="login-btn">Login</button>
         </div>
-
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
