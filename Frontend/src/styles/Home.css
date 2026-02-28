@@ -1,11 +1,11 @@
 .home{
     width: 100%;
-    height: 560px;
+    height: 600px;
     /* background-color: aqua; */
     display: flex;
     flex-direction: column;
     padding: 20px;
-    gap: 10px;
+    gap: 50px;
 }
 
 .file-details{
@@ -86,20 +86,38 @@
 
 .files-options{
     flex: 1;
-    background-color: bisque;
+    background-color: rgb(133, 131, 128);
     display: flex;
-    padding: 10px;
+    padding: 5px 50px 5px 0;
+    justify-content: center;
+    gap: 40px;
+
+  
 }
 
 .upload-opt{
     height: 200px;
-    width: 200px;
+    /* width: 300px; */
+    padding: 20px;
     background-color: aquamarine;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
 }
+
 
 .upload-pic img{
-    width: 50px;
+    width: 55px;
 }
 
+.upload-text{
+        display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
 
 

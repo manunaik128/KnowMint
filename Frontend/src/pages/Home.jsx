@@ -6,6 +6,8 @@ import Hand from "../assets/hand.png";
 import Tick from "../assets/tick.png";
 import Search from "../assets/search.png";
 import Upload from "../assets/upload.png";
+import Explore from "../assets/explore.png";
+import File from "../assets/file.png";
 
 const Home = () => {
   return (
@@ -79,12 +81,49 @@ const Home = () => {
 
             </div>
             <div className="upload-text">
-              
+              <h3>Upload</h3> <br />
+              <p id="paragraphs">
+                Lorem ipsum dolor sit amet consectetur 
+              </p> <br />
+              <button id="upload">Upload Notes</button>
             </div>
             
 
           </div>
+
+          <div className="upload-opt">
+            <div className="upload-pic">
+              <img src={File} alt="" />
+
+            </div>
+            <div className="upload-text">
+              <h3>Upload</h3> <br />
+              <p id="paragraphs">
+                Lorem ipsum dolor sit amet consectetur 
+              </p> <br />
+              <button id="upload">Open Notes</button>
+            </div>
+          </div>
+
+          <div className="upload-opt">
+            <div className="upload-pic">
+              <img src={Explore} alt="" />
+
+            </div>
+            <div className="upload-text">
+              <h3>Explore</h3> <br />
+              <p id="paragraphs">
+                Lorem ipsum dolor sit amet consectetur 
+              </p> <br />
+              <button id="upload">Start Exploring</button>
+            </div>
+            
+
+          </div>
+
         </div>
+
+        
       </div>
     </div>
   );
