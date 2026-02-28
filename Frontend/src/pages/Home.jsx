@@ -1,6 +1,7 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 import "../styles/Home.css";
+import Back from "../assets/back.png";
 import Access from "../assets/access.png";
 import Hand from "../assets/hand.png";
 import Tick from "../assets/tick.png";
