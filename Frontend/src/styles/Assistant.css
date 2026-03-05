@@ -1,0 +1,115 @@
+.assistant-page {
+  height: 600px;
+  width: 100%;
+  background-color: red;
+  display: flex;
+  padding: 40px;
+  gap: 5px;
+}
+.ai-notes-section {
+  flex: 1.5;
+  display: flex;
+  flex-direction: column;
+  background-color: blue;
+  padding: 25px 25px 25px 45px;
+  gap: 10px;
+}
+
+#browse {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.upload-option {
+  width: 75%;
+  height: auto;
+  border: 2px dashed;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+#upload-info {
+  font-size: 25px;
+}
+.upload-image {
+  height: 30px;
+  width: 50px;
+}
+
+.upload-image img {
+  width: 100%;
+}
+
+.recent {
+  width: 75%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+  /* gap: 5px; */
+}
+.texts {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 42px 0 20px;
+  /* background-color: green; */
+}
+.recent-view-notes {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10px;
+  gap: 15px;
+  flex: 6;
+  /* background-color: red; */
+}
+
+.notes-summarize {
+  height: 100px;
+  width: 250px;
+  display: flex;
+  border-radius: 10px;
+  background-color: white ;
+  padding: 5px;
+  gap: 10px;
+}
+
+.pdf-image {
+  height: 60px;
+  width: 70px;
+  /* background-color: bisque; */
+}
+
+.pdf-image img {
+  width: 100%;
+}
+
+.pdf-details {
+  width: 100%;
+  height: 100%;
+  /* background-color: blueviolet; */
+  padding: 5px;
+}
+
+#summarize {
+  margin-top: 12px;
+  padding: 6px 32px;
+  border-radius: 5px;
+  border: none;
+  background-color: rgb(143, 145, 144);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.ai-summary-section {
+  flex: 1;
+  background-color: aqua;
+}

@@ -6,6 +6,7 @@ import Explore from "./pages/Explore";
 import Upload from "./pages/Upload";
 import Login from "./pages/Login";
 import Notes from "./pages/Notes";
+import Assistant from "./pages/Assistant";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/upload" element={<Upload />} />
         <Route path="/login" element={<Login />} />
         <Route path="/notes" element={<Notes />} />
+        <Route path="/assistant" element={<Assistant />} />
       </Routes>
     </BrowserRouter>
   );
