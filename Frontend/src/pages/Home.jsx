@@ -1,5 +1,4 @@
 import React from "react";
-import Navbar from "../components/Navbar";
 import "../styles/Home.css";
 import Back from "../assets/back.png";
 import Access from "../assets/access.png";
@@ -13,7 +12,6 @@ import File from "../assets/file.png";
 const Home = () => {
   return (
     <div>
-      <Navbar />
       <div className="home">
         <div className="file-details">
           <div className="details">
