@@ -29,8 +29,7 @@ const Assistant = () => {
 
   return (
     <div className="assistant-page">
-
-      {/* LEFT SECTION */}
+      
       <div className="ai-notes-section">
 
         <div className="assistant-text">
@@ -40,7 +39,6 @@ const Assistant = () => {
           </p>
         </div>
 
-        {/* Upload Box */}
 
         <div className="upload-option">
 
@@ -67,7 +65,6 @@ const Assistant = () => {
         </div>
 
 
-        {/* Recent Notes */}
 
         <div className="recent">
 
@@ -102,8 +99,6 @@ const Assistant = () => {
 
       </div>
 
-
-      {/* RIGHT SIDE PANEL */}
 
       <div className="ai-summary-section">
 
