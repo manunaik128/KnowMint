@@ -1,0 +1,144 @@
+.upload-page{
+  min-height:85vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family:sans-serif;
+  background:linear-gradient(120deg,#d9f1e7,#d9e6f7);
+}
+
+.upload-container{
+  width:900px;
+  background:white;
+  padding:40px;
+  border-radius:20px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.15);
+}
+
+.upload-container h1{
+  font-size:30px;
+}
+
+.subtitle{
+  color:#666;
+  margin-top:10px;
+  margin-bottom:25px;
+  line-height:1.5;
+}
+
+.upload-content{
+  display:flex;
+  gap:40px;
+}
+
+/* LEFT FORM */
+
+.form-section{
+  flex:1.3;
+}
+
+.form-section label{
+  font-weight:500;
+}
+
+.form-section input{
+  width:100%;
+  padding:12px;
+  border:1px solid #ddd;
+  border-radius:8px;
+  margin-top:6px;
+}
+
+.row{
+  display:flex;
+  gap:15px;
+  margin-top:15px;
+}
+
+.input-group{
+  flex:1;
+}
+
+.input-group select{
+  width:100%;
+  padding:10px;
+  border-radius:8px;
+  border:1px solid #ccc;
+  outline:none;
+  font-size:14px;
+}
+
+.input-group select:focus{
+  border:1px solid #2e8b57;
+}
+
+/* BUTTONS */
+
+.btn-row{
+  margin-top:20px;
+  display:flex;
+  gap:12px;
+}
+
+.upload-btn{
+  background:#2e8b57;
+  color:white;
+  border:none;
+  padding:10px 22px;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.cancel-btn{
+  background:#f0f0f0;
+  border:none;
+  padding:10px 22px;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.note{
+  margin-top:15px;
+  font-size:13px;
+  color:#777;
+}
+
+/* RIGHT UPLOAD BOX */
+
+.upload-box{
+  flex:1;
+  border:2px dashed #ddd;
+  border-radius:15px;
+  padding:35px;
+  text-align:center;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+
+.upload-icon{
+  width:110px;
+  margin-bottom:10px;
+}
+
+.browse-text{
+  color:#2e8b57;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.browse-btn{
+  margin-top:15px;
+  background:#2e8b57;
+  color:white;
+  border:none;
+  padding:12px 25px;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.file-name{
+  margin-top:10px;
+  font-size:14px;
+}
