@@ -96,7 +96,7 @@ const Home = () => {
 
             </div>
             <div className="upload-text">
-              <h3>Upload</h3> <br />
+              <h3>My notes</h3> <br />
               <p id="paragraphs">
                 Lorem ipsum dolor sit amet consectetur 
               </p> <br />

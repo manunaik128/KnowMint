@@ -7,3 +7,7 @@ a {
     text-decoration: none;
     color: black;
 }
+
+body{
+      background:linear-gradient(120deg,#d9f1e7,#d9e6f7);
+}

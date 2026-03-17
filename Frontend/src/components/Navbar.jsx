@@ -21,6 +21,10 @@ const Navbar = () => {
             <Link to="/notes">
               <li>My Notes</li>
             </Link>
+            <Link to ='/assistant'>
+            <li> Assistant</li>
+            </Link>
+
             <Link to="/upload">
               <li>Upload</li>
             </Link>
