@@ -1,74 +1,67 @@
-import React from 'react'
-import "../styles/Upload.css"
+import React from "react";
+import "../styles/Upload.css";
 
 const Upload = () => {
   return (
-    
+    <div className="page">
+      {/* Navbar */}
+      <nav className="navbar">
+        <div className="logo">KnowMint</div>
+        <ul className="nav-links">
+          <li>Explore</li>
+          <li>My Notes</li>
+          <li className="active">Upload</li>
+        </ul>
+        <button className="login-btn">Login</button>
+      </nav>
 
-<div class="container">
-
-    <h1>Upload Notes</h1>
-    <p class="desc">
-        Share your study materials by uploading your notes. 
-        Tag them with the correct semester, subject and branch for better organization.
-    </p>
-
-    <div class="upload-box">
-
-        <div classname="upload-icon">
-            📁
-        </div>
-
-        <p>Drag & drop your PDF notes here or</p>
-
-        <button class="browse-btn">Browse Files</button>
-
-        <input type="text" placeholder="Enter title of your notes..." class="input"/>
-
-        <div class="row">
-
-            <select>
-                <option>Select Semester</option>
-                <option>1st Semester</option>
-                <option>2nd Semester</option>
-                <option>3rd Semester</option>
-            </select>
-
-            <select>
-                <option>Select Subject</option>
-                <option>Web Design</option>
-                <option>Python</option>
-                <option>Database</option>
-            </select>
-
-            <select>
-                <option>Select Branch</option>
-                <option>BCA</option>
-                <option>BSC</option>
-                <option>BTECH</option>
-            </select>
-
-        </div>
-
-        <div class="buttons">
-
-            <button class="upload-btn">Upload Note</button>
-            <button class="cancel-btn">Cancel</button>
-
-        </div>
-
-        <p class="note">
-            Please upload only educational materials in PDF format (max size: 20MB)
+      {/* Upload Section */}
+      <div className="container">
+        <h1>Upload Notes</h1>
+        <p className="desc">
+          Share your study materials by uploading your notes. Tag them with the
+          correct semester, subject and branch for better organization.
         </p>
 
+        <div className="upload-box">
+          <div className="upload-icon">📁</div>
+          <p>
+            Drag & drop your PDF notes here or <span>browse files</span>
+          </p>
+          <button className="browse-btn">Browse Files</button>
+        </div>
+
+        {/* Form */}
+        <div className="form">
+          <input type="text" placeholder="Enter title of your notes..." />
+
+          <div className="row">
+            <select>
+              <option>Select Semester</option>
+            </select>
+
+            <select>
+              <option>Select Subject</option>
+            </select>
+
+            <select>
+              <option>Select Branch</option>
+            </select>
+          </div>
+
+          <div className="buttons">
+            <button className="upload-btn">Upload Note</button>
+            <button className="cancel-btn">Cancel</button>
+          </div>
+
+          <p className="note">
+            Please upload only educational materials in PDF format (max size:
+            20MB)
+          </p>
+        </div>
+      </div>
     </div>
+  );
+};
 
-</div>
-
-
-
-    
-  )
-}
-
-export default Upload
+export default Upload;

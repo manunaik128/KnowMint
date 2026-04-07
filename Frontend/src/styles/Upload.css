@@ -1,100 +1,174 @@
-*{
-    margin: 0%;
-    padding: 0%;
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
 }
 
-body{
-    font-family: Arial;
-    background: linear-gradient(to right,#cfe9f3,#e6f6ff);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
+/* Background */
+.page {
+  min-height: 100vh;
+  background: linear-gradient(to right, #dfe9f3, #ffffff);
+  padding: 20px;
 }
 
-.container{
-    background:white;
-    padding:40px;
-    border-radius:12px;
-    width:500px;
-    text-align:center;
-    box-shadow:0 0 20px rgba(0,0,0,0.1);
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 12px 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
 }
 
-h1{
-    margin-bottom:10px;
+.logo {
+  font-weight: bold;
+  font-size: 20px;
 }
 
-.desc{
-    font-size:14px;
-    color:gray;
-    margin-bottom:20px;
+.nav-links {
+  display: flex;
+  gap: 20px;
+  list-style: none;
 }
 
-.upload-box{
-    border:2px dashed #ccc;
-    padding:25px;
-    border-radius:10px;
+.nav-links li {
+  cursor: pointer;
 }
 
-.upload-icon{
-    font-size:40px;
-    margin-bottom:10px;
+.nav-links .active {
+  color: green;
+  font-weight: bold;
 }
 
-.browse-btn{
-    background:#3c8f6d;
-    color:white;
-    border:none;
-    padding:10px 20px;
-    border-radius:5px;
-    margin:10px 0;
-    cursor:pointer;
+.login-btn {
+  background: green;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
 }
 
-.input{
-    width:100%;
-    padding:10px;
-    margin:10px 0;
-    border:1px solid #ccc;
-    border-radius:5px;
+/* Container */
+.container {
+  max-width: 700px;
+  margin: auto;
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  text-align: center;
 }
 
-.row{
-    display:flex;
-    gap:10px;
-    margin-top:10px;
+.container h1 {
+  margin-bottom: 10px;
 }
 
-select{
-    flex:1;
-    padding:8px;
-    border:1px solid #ccc;
-    border-radius:5px;
+.desc {
+  color: gray;
+  margin-bottom: 20px;
 }
 
-.buttons{
-    margin-top:20px;
+/* Upload Box */
+.upload-box {
+  border: 2px dashed #ccc;
+  padding: 30px;
+  border-radius: 10px;
+  margin-bottom: 20px;
 }
 
-.upload-btn{
-    background:#3c8f6d;
-    color:white;
-    border:none;
-    padding:10px 20px;
-    border-radius:5px;
-    margin-right:10px;
+.upload-icon {
+  font-size: 40px;
+  margin-bottom: 10px;
 }
 
-.cancel-btn{
-    background:#eee;
-    border:none;
-    padding:10px 20px;
-    border-radius:5px;
+.upload-box span {
+  color: green;
+  cursor: pointer;
 }
 
-.note{
-    font-size:12px;
-    color:gray;
-    margin-top:10px;
+.browse-btn {
+  margin-top: 10px;
+  background: green;
+  color: white;
+  padding: 8px 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Form */
+.form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.row select {
+  flex: 1;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* Buttons */
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.upload-btn {
+  background: green;
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background: #eee;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Note */
+.note {
+  font-size: 12px;
+  color: gray;
+  margin-top: 10px;
+}
+
+/* 📱 Responsive Design */
+@media (max-width: 768px) {
+  .row {
+    flex-direction: column;
+  }
+
+  .navbar {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .nav-links {
+    justify-content: center;
+  }
+
+  .buttons {
+    flex-direction: column;
+  }
 }
