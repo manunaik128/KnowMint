@@ -5,15 +5,6 @@ const Upload = () => {
   return (
     <div className="page">
       {/* Navbar */}
-      <nav className="navbar">
-        <div className="logo">KnowMint</div>
-        <ul className="nav-links">
-          <li>Explore</li>
-          <li>My Notes</li>
-          <li className="active">Upload</li>
-        </ul>
-        <button className="login-btn">Login</button>
-      </nav>
 
       {/* Upload Section */}
       <div className="container">
