@@ -1,0 +1,153 @@
+.notes-container {
+  padding: 30px 40px;
+  background: linear-gradient(to right, #dbeafe, #ecfdf5);
+  min-height: 100vh;
+}
+
+/* HEADER */
+.notes-header h1 {
+  font-size: 32px;
+  margin-bottom: 5px;
+}
+
+.notes-header p {
+  color: #555;
+  margin-bottom: 20px;
+}
+
+/* CONTROLS */
+.notes-controls {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+  align-items: center;
+}
+
+.add-note {
+  background: #22c55e;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* SEARCH */
+.search-box input {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  width: 220px;
+}
+
+/* DROPDOWNS */
+.notes-controls select {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+/* GRID */
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+/* CARD */
+.note-card {
+  display: flex;
+  gap: 15px;
+  align-items: flex-start;
+  background: white;
+  padding: 18px;
+  border-radius: 18px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  transition: 0.3s;
+}
+
+.note-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+
+/* ICON */
+.note-icon {
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+}
+
+.note-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* CONTENT */
+.note-content {
+  flex: 1;
+}
+
+.note-content h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.meta {
+  color: #777;
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+/* TAGS */
+.tags {
+  margin: 6px 0;
+}
+
+.tags span {
+  background: #dcfce7;
+  color: #166534;
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  margin-right: 5px;
+}
+
+/* UPLOAD TEXT */
+.upload {
+  font-size: 13px;
+  color: #666;
+  margin: 8px 0;
+}
+
+/* ACTION BUTTONS */
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.actions button {
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.view {
+  background: #22c55e;
+  color: white;
+}
+
+.share {
+  background: #e5e7eb;
+}
+
+.more {
+  background: #f3f4f6;
+}
+
