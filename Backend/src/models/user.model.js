@@ -19,6 +19,11 @@ const userSchema = new mongoose.Schema(
       required: [true, "Password is required to register new user"],
       minLength: [6, "Password should contain more than 6 character"],
     },
+    clerkId: {
+      type: String,
+      unique: true,
+      sparse: true, // Allows null/undefined values
+    },
   },
   {
     timestamps: true,

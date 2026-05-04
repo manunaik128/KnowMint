@@ -2,14 +2,25 @@ import { useState } from "react";
 import "../styles/Navbar.css";
 import Logo from "../assets/logo.png";
 import ProfileIcon from "../assets/profile.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import { useToast } from "../context/ToastContext.jsx";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const { showToast } = useToast();
+  const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const handleLogout = async () => {
+    console.log("Logout clicked");
+    await logout();
+    console.log("Logout completed");
+    showToast("Logged out successfully", "success");
+    setDropdownOpen(false);
+    // Navigate to login page
+    navigate("/login");
+  };
 
   return (
     <div>
@@ -52,11 +63,7 @@ const Navbar = () => {
                   <button
                     className="logout-btn"
                     type="button"
-                    onClick={() => {
-                      logout();
-                      showToast("Logged out successfully", "success");
-                      setDropdownOpen(false);
-                    }}
+                    onClick={handleLogout}
                   >
                     Logout
                   </button>

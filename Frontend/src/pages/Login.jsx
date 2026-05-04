@@ -31,6 +31,7 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    console.log("Login form submitted", { isSignup, formData });
     setLoading(true);
     setMessage("");
 
@@ -46,15 +47,25 @@ const Login = () => {
             password: formData.password,
           });
 
+      console.log("Login/Signup response:", response.data);
+      
       const profile = response.data?.user;
+      const token = response.data?.token;
+      
       if (profile) {
-        login(profile);
+        console.log("Calling login function with:", { profile, token });
+        login(profile, token);
         showToast(isSignup ? "Signup successful" : "Login successful", "success");
+        
+        // Redirect after successful login
+        setTimeout(() => {
+          console.log("Redirecting to home page");
+          navigate("/", { replace: true });
+        }, 500);
       }
-
-      setMessage(isSignup ? "Signup successful. Redirecting..." : "Login successful. Redirecting...");
-      setTimeout(() => navigate("/"), 700);
     } catch (error) {
+      console.error("Login error:", error);
+      console.error("Error response:", error.response?.data);
       const errorMessage = error.response?.data?.message || "Unable to authenticate. Please try again.";
       showToast(errorMessage, "error");
       setMessage(errorMessage);

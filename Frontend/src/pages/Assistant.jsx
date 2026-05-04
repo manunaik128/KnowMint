@@ -1,30 +1,90 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { getMyNotes } from "../services/notesService";
+import { getNoteSummary, askNoteQuestion } from "../services/aiService";
+import { useToast } from "../context/ToastContext";
+import { useAuth } from "../context/AuthContext";
 import "../styles/Assistant.css";
 import Aiupload from "../assets/aiupload.png";
 import Pdf from "../assets/pdf.png";
 
 const Assistant = () => {
-
+  const navigate = useNavigate();
+  const toast = useToast();
+  const { user } = useAuth();
+  
   const [notes, setNotes] = useState([]);
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedNote, setSelectedNote] = useState(null);
+  const [summary, setSummary] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState('summary');
+  const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
+  const [askingQuestion, setAskingQuestion] = useState(false);
 
-  const handleUpload = (event) => {
-    const file = event.target.files[0];
+  // Fetch user's notes on mount
+  useEffect(() => {
+    if (user) {
+      fetchUserNotes();
+    }
+  }, [user]);
 
-    if (!file) return;
+  const fetchUserNotes = async () => {
+    try {
+      const response = await getMyNotes();
+      setNotes(response.data.notes);
+    } catch (error) {
+      console.error("Failed to fetch notes:", error);
+    }
+  };
 
-    if (file.type !== "application/pdf") {
-      alert("Please upload a PDF file");
+  const handleNoteSelect = (note) => {
+    setSelectedNote(note);
+    setSummary("");
+    setAnswer("");
+    toast.success(`Selected: ${note.title}`);
+  };
+
+  const handleSummarize = async () => {
+    if (!selectedNote) {
+      toast.error("Please select a note first");
       return;
     }
 
-    const newNote = {
-      name: file.name,
-      semester: "Uploaded File"
-    };
+    setLoading(true);
+    try {
+      const response = await getNoteSummary(selectedNote._id, activeTab);
+      setSummary(response.data.summary);
+      toast.success("AI summary generated!");
+    } catch (error) {
+      console.error("Error generating summary:", error);
+      toast.error(error.response?.data?.message || "Failed to generate summary");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    setNotes((prev) => [newNote, ...prev]);
-    setSelectedFile(file.name);
+  const handleAskQuestion = async () => {
+    if (!selectedNote) {
+      toast.error("Please select a note first");
+      return;
+    }
+    if (!question.trim()) {
+      toast.error("Please enter a question");
+      return;
+    }
+
+    setAskingQuestion(true);
+    try {
+      const response = await askNoteQuestion(selectedNote._id, question);
+      setAnswer(response.data.answer);
+      toast.success("AI answered your question!");
+    } catch (error) {
+      console.error("Error asking question:", error);
+      toast.error(error.response?.data?.message || "Failed to get answer");
+    } finally {
+      setAskingQuestion(false);
+    }
   };
 
   return (
@@ -46,19 +106,15 @@ const Assistant = () => {
 
           <h3>Upload Notes (PDF)</h3>
 
-          <p className="drag-text">or drag & drop here</p>
+          <p className="drag-text">Upload notes to use AI features</p>
 
-          <input
-            type="file"
-            accept="application/pdf"
-            id="fileUpload"
-            hidden
-            onChange={handleUpload}
-          />
-
-          <label htmlFor="fileUpload" className="browse-btn">
-            Browse Files
-          </label>
+          <button
+            onClick={() => navigate('/upload')}
+            className="browse-btn"
+            style={{ border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}
+          >
+            Go to Upload Page
+          </button>
 
           <p className="limit-text">Supports PDF up to 20MB</p>
 
@@ -79,17 +135,20 @@ const Assistant = () => {
               <p className="no-notes">No uploaded notes yet</p>
             )}
 
-            {notes.map((note, index) => (
-              <div className="notes-card" key={index}>
-
+            {notes.map((note) => (
+              <div 
+                className={`notes-card ${selectedNote?._id === note._id ? 'selected' : ''}`} 
+                key={note._id}
+                onClick={() => handleNoteSelect(note)}
+              >
                 <img src={Pdf} alt="pdf icon" />
-
                 <div className="pdf-details">
-                  <h4>{note.name}</h4>
-                  <p>{note.semester}</p>
-                  <button>Summarize</button>
+                  <h4>{note.title}</h4>
+                  <p>{note.branch} • {note.semester}</p>
+                  <button onClick={(e) => { e.stopPropagation(); handleNoteSelect(note); }}>
+                    Select
+                  </button>
                 </div>
-
               </div>
             ))}
 
@@ -108,45 +167,93 @@ const Assistant = () => {
 
         <div className="summary-file">
           <p>
-            {selectedFile ? selectedFile : "No file selected"}
+            {selectedNote ? selectedNote.title : "No file selected"}
           </p>
-          <span className="change">Change</span>
+          {selectedNote && <span className="change">Change</span>}
         </div>
 
         <div className="summary-tabs">
-          <button className="active">Summary</button>
-          <button>Key Points</button>
-          <button>Flashcards</button>
+          <button 
+            className={activeTab === 'summary' ? 'active' : ''}
+            onClick={() => setActiveTab('summary')}
+          >
+            Summary
+          </button>
+          <button 
+            className={activeTab === 'keypoints' ? 'active' : ''}
+            onClick={() => setActiveTab('keypoints')}
+          >
+            Key Points
+          </button>
+          <button 
+            className={activeTab === 'flashcards' ? 'active' : ''}
+            onClick={() => setActiveTab('flashcards')}
+          >
+            Flashcards
+          </button>
         </div>
 
-        <div className="chapter-summary">
+        {loading ? (
+          <div className="loading-summary">
+            <p>🤖 AI is analyzing your notes...</p>
+            <p>This may take a few seconds</p>
+          </div>
+        ) : summary ? (
+          <div className="chapter-summary">
+            <h4>
+              {activeTab === 'summary' ? 'AI Summary' : 
+               activeTab === 'keypoints' ? 'Key Points' : 'Flashcards'}
+            </h4>
+            <div className="ai-content">
+              {summary.split('\n').map((line, idx) => (
+                <p key={idx}>{line}</p>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="chapter-summary">
+            <h4>Select a note and click Generate to get AI insights</h4>
+          </div>
+        )}
 
-          <h4>Chapter-wise Summary</h4>
+        <button 
+          className="ask-ai" 
+          onClick={handleSummarize}
+          disabled={loading || !selectedNote}
+        >
+          {loading ? 'Generating...' : `Generate ${activeTab === 'summary' ? 'Summary' : activeTab === 'keypoints' ? 'Key Points' : 'Flashcards'}`}
+        </button>
 
-          <ul>
-            <li>
-              <b>Arrays & Linked Lists</b>
-              <p>Arrays: Types, operations, complexity</p>
-              <p>Linked Lists: Implementation, types</p>
-            </li>
-
-            <li>
-              <b>Stacks & Queues</b>
-              <p>LIFO, FIFO concepts</p>
-              <p>Applications & examples</p>
-            </li>
-
-            <li>
-              <b>Trees & Graphs</b>
-              <p>Tree traversal (DFS, BFS)</p>
-              <p>Graph representation</p>
-            </li>
-
-          </ul>
-
-        </div>
-
-        <button className="ask-ai">Ask AI a Question</button>
+        {/* Ask AI Question Section */}
+        {selectedNote && (
+          <div className="ask-question-section">
+            <h4>Ask AI a Question</h4>
+            <input
+              type="text"
+              placeholder="Type your question about this note..."
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleAskQuestion()}
+            />
+            <button 
+              className="submit-question"
+              onClick={handleAskQuestion}
+              disabled={askingQuestion || !question.trim()}
+            >
+              {askingQuestion ? 'Asking...' : 'Ask AI'}
+            </button>
+            {answer && (
+              <div className="ai-answer">
+                <h5>AI Answer:</h5>
+                <div className="answer-content">
+                  {answer.split('\n').map((line, idx) => (
+                    <p key={idx}>{line}</p>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
 
       </div>
 

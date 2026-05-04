@@ -8,6 +8,7 @@ const COOKIE_OPTIONS = {
   sameSite: "none",
   secure: process.env.NODE_ENV === "production",
   maxAge: 24 * 60 * 60 * 1000,
+  path: "/",
 };
 
 export const userRegisterController = async (req, res) => {
@@ -45,6 +46,7 @@ export const userRegisterController = async (req, res) => {
         name: user.name,
         email: user.email,
       },
+      token, // Return token for localStorage fallback
     });
   } catch (error) {
     res.status(500).json({
@@ -89,6 +91,7 @@ export const userLoginController = async (req, res) => {
         name: user.name,
         email: user.email,
       },
+      token, // Return token for localStorage fallback
     });
   } catch (error) {
     res.status(500).json({

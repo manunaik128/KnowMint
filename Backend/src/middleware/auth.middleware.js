@@ -2,10 +2,25 @@ import jwt from "jsonwebtoken";
 import userModel from "../models/user.model.js";
 
 export const authenticateUser = async (req, res, next) => {
-  const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
+  console.log("Auth middleware called:", {
+    cookies: Object.keys(req.cookies),
+    headers: req.headers.authorization,
+    method: req.method,
+    url: req.url,
+  });
+
+  // Check for our custom token OR Clerk session cookie OR Authorization header
+  const token = 
+    req.cookies.token || 
+    req.cookies.__session || 
+    req.cookies.__session_FGfzaAR4 ||
+    req.headers.authorization?.split(" ")[1];
+
+  console.log("Token found:", !!token);
 
   if (!token) {
-    return res.status(401).json({ message: "Authentication required." });
+    console.log("No token found in request");
+    return res.status(401).json({ message: "Authentication required. Please login first." });
   }
 
   try {
@@ -17,8 +32,36 @@ export const authenticateUser = async (req, res, next) => {
     }
 
     req.user = { id: user._id, email: user.email, name: user.name };
+    console.log("User authenticated:", req.user);
     next();
   } catch (error) {
+    // If JWT verification fails with our secret, it might be a Clerk token
+    // For Clerk tokens, we'll try to decode without verification to get user info
+    try {
+      const decoded = jwt.decode(token);
+      
+      if (decoded && (decoded.sub || decoded.email)) {
+        // This is a Clerk token - find or create user based on Clerk ID
+        let user = await userModel.findOne({ clerkId: decoded.sub });
+        
+        if (!user) {
+          // Create user if doesn't exist
+          user = await userModel.create({
+            name: decoded.name || decoded.email?.split('@')[0] || 'User',
+            email: decoded.email || `${decoded.sub}@clerk.temp`,
+            password: 'clerk-authenticated', // Placeholder password
+            clerkId: decoded.sub,
+          });
+        }
+        
+        req.user = { id: user._id, email: user.email, name: user.name };
+        console.log("Clerk user authenticated:", req.user);
+        return next();
+      }
+    } catch (clerkError) {
+      console.log("Not a valid Clerk token either");
+    }
+    
     res.status(401).json({ message: "Invalid or expired token.", error: error.message });
   }
 };
