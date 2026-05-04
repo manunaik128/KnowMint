@@ -71,8 +71,17 @@ export const getNoteById = async (noteId) => {
 
 // Download a note
 export const downloadNote = async (noteId) => {
+  const user = JSON.parse(localStorage.getItem("knowmint_user"));
+  const token = user?.token;
+  
+  const headers = {};
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+  
   return api.get(`/download/${noteId}`, {
     responseType: "blob",
+    headers
   });
 };
 

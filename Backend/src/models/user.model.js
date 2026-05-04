@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema(
     clerkId: {
       type: String,
       unique: true,
-      sparse: true, // Allows null/undefined values
+      sparse: true, 
     },
   },
   {
