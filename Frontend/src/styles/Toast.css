@@ -25,6 +25,10 @@
   background-color: #e53e3e;
 }
 
+.toast-toast.warning {
+  background-color: #d69e2e;
+}
+
 @keyframes toast-slide {
   from {
     opacity: 0;

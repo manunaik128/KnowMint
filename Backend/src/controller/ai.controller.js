@@ -1,5 +1,5 @@
 import noteModel from "../models/note.model.js";
-import { extractTextFromPDFLimited } from "../services/pdfExtractor.service.js";
+import { extractTextFromPDFUrlLimited } from "../services/pdfExtractor.service.js";
 import { getAISummary, askAIQuestion } from "../services/gemini.service.js";
 
 // Get AI summary of a note
@@ -21,8 +21,8 @@ export const getNoteSummaryController = async (req, res) => {
     }
 
     // Extract text from PDF
-    console.log("Extracting text from PDF:", note.filePath);
-    const textContent = await extractTextFromPDFLimited(note.filePath, 50000);
+    console.log("Extracting text from PDF:", note.fileUrl);
+    const textContent = await extractTextFromPDFUrlLimited(note.fileUrl, 50000);
     
     if (!textContent || textContent.trim().length === 0) {
       return res.status(400).json({ 
@@ -75,8 +75,8 @@ export const askNoteQuestionController = async (req, res) => {
     }
 
     // Extract text from PDF
-    console.log("Extracting text for Q&A:", note.filePath);
-    const textContent = await extractTextFromPDFLimited(note.filePath, 50000);
+    console.log("Extracting text for Q&A:", note.fileUrl);
+    const textContent = await extractTextFromPDFUrlLimited(note.fileUrl, 50000);
     
     if (!textContent || textContent.trim().length === 0) {
       return res.status(400).json({ 
@@ -112,7 +112,7 @@ export const quickSummaryOnUpload = async (noteId) => {
     const note = await noteModel.findById(noteId);
     if (!note) return;
 
-    const textContent = await extractTextFromPDFLimited(note.filePath, 30000);
+    const textContent = await extractTextFromPDFUrlLimited(note.fileUrl, 30000);
     if (!textContent) return;
 
     // Generate a brief summary in background

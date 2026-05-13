@@ -3,12 +3,18 @@ font-family: Arial, sans-serif;
 background:#f2f5f7;
 margin:0;
 padding:0;
+box-sizing:border-box;
+}
+
+*{
+box-sizing:border-box;
 }
 
 .container{
 width:90%;
+max-width:1200px;
 margin:auto;
-padding:40px;
+padding:40px 20px;
 }
 
 h1{
@@ -21,10 +27,12 @@ color:gray;
 margin-bottom:30px;
 }
 
+/* Filters */
 .filters{
 display:flex;
 gap:10px;
 margin-bottom:30px;
+flex-wrap:wrap;
 }
 
 .filters input,
@@ -32,19 +40,28 @@ margin-bottom:30px;
 padding:10px;
 border-radius:8px;
 border:1px solid #ccc;
+flex:1;
+min-width:200px;
 }
 
+/* Notes Grid */
 .notes-grid{
 display:grid;
 grid-template-columns:repeat(3,1fr);
 gap:20px;
 }
 
+/* Card */
 .card{
 background:white;
 padding:20px;
 border-radius:12px;
 box-shadow:0 3px 10px rgba(0,0,0,0.1);
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-5px);
 }
 
 .author{
@@ -57,6 +74,8 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 margin-top:15px;
+gap:10px;
+flex-wrap:wrap;
 }
 
 button{
@@ -66,25 +85,84 @@ padding:8px 14px;
 border-radius:6px;
 color:white;
 cursor:pointer;
+transition:0.3s;
 }
 
 button:hover{
 background:#27ae60;
 }
 
+/* Loading & Empty State */
 .loading {
-  text-align: center;
-  padding: 60px 20px;
-  font-size: 18px;
-  color: #666;
+text-align:center;
+padding:60px 20px;
+font-size:18px;
+color:#666;
 }
 
 .no-notes {
-  text-align: center;
-  padding: 60px 20px;
-  font-size: 18px;
-  color: #666;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+text-align:center;
+padding:60px 20px;
+font-size:18px;
+color:#666;
+background:white;
+border-radius:12px;
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
+}
+
+/* Tablet View */
+@media (max-width: 992px){
+
+.notes-grid{
+grid-template-columns:repeat(2,1fr);
+}
+
+h1{
+font-size:28px;
+}
+}
+
+/* Mobile View */
+@media (max-width: 600px){
+
+.container{
+width:95%;
+padding:20px 10px;
+}
+
+h1{
+font-size:24px;
+text-align:center;
+}
+
+.subtitle{
+text-align:center;
+}
+
+.filters{
+flex-direction:column;
+}
+
+.filters input,
+.filters select{
+width:100%;
+min-width:100%;
+}
+
+.notes-grid{
+grid-template-columns:1fr;
+}
+
+.card{
+padding:16px;
+}
+
+.card-bottom{
+flex-direction:column;
+align-items:flex-start;
+}
+
+button{
+width:100%;
+}
 }

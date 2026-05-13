@@ -23,9 +23,9 @@ const noteSchema = new mongoose.Schema(
       type: String,
       required: [true, "File name is required"],
     },
-    filePath: {
+    fileUrl: {
       type: String,
-      required: [true, "File path is required"],
+      required: [true, "File URL is required"],
     },
     fileSize: {
       type: String,

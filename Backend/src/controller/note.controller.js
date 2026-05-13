@@ -1,13 +1,24 @@
 import noteModel from "../models/note.model.js";
+import cloudinary from "../config/cloudinary.js";
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const uploadsDir = path.join(__dirname, "../../uploads");
 
 // Upload a new note
 export const uploadNoteController = async (req, res) => {
   try {
     console.log("Upload request received:", {
       body: req.body,
-      file: req.file,
+      file: req.file ? { 
+        originalname: req.file.originalname,
+        size: req.file.size,
+        mimetype: req.file.mimetype,
+        bufferLength: req.file.buffer ? req.file.buffer.length : 'no buffer'
+      } : null,
       user: req.user,
     });
 
@@ -15,6 +26,7 @@ export const uploadNoteController = async (req, res) => {
 
     // Validate required fields
     if (!title || !semester || !subject || !branch) {
+      console.log("Validation failed - missing fields");
       return res.status(400).json({ 
         message: "Title, semester, subject, and branch are required." 
       });
@@ -22,6 +34,7 @@ export const uploadNoteController = async (req, res) => {
 
     // Check if file was uploaded
     if (!req.file) {
+      console.log("Validation failed - no file");
       return res.status(400).json({ 
         message: "Please upload a PDF file." 
       });
@@ -29,14 +42,67 @@ export const uploadNoteController = async (req, res) => {
 
     // Check if user is authenticated
     if (!req.user || !req.user.id) {
+      console.log("Validation failed - not authenticated");
       return res.status(401).json({ 
         message: "Authentication required. Please login." 
       });
     }
 
+    let fileUrl;
+    
+    // Try Cloudinary first
+    console.log("Attempting Cloudinary upload...");
+    try {
+      const uploadResult = await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          {
+            folder: 'knowmint/notes',
+            resource_type: 'raw',
+            public_id: `${Date.now()}-${req.file.originalname.replace(/[^a-zA-Z0-9-_.]/g, '')}`,
+            flags: 'attachment'
+          },
+          (error, result) => {
+            if (error) {
+              console.error("Cloudinary upload error:", error);
+              reject(error);
+            } else {
+              console.log("Cloudinary upload success:", result.secure_url);
+              resolve(result);
+            }
+          }
+        );
+        
+        stream.on('error', (error) => {
+          console.error("Stream error:", error);
+          reject(error);
+        });
+        
+        stream.end(req.file.buffer);
+      });
+
+      fileUrl = uploadResult.secure_url;
+      console.log("File uploaded to Cloudinary successfully");
+    } catch (cloudinaryError) {
+      // Fallback to local storage
+      console.warn("Cloudinary failed, falling back to local storage:", cloudinaryError.message);
+      
+      // Create uploads directory if it doesn't exist
+      if (!fs.existsSync(uploadsDir)) {
+        fs.mkdirSync(uploadsDir, { recursive: true });
+      }
+
+      const filename = `${Date.now()}-${req.file.originalname}`;
+      const filepath = path.join(uploadsDir, filename);
+      
+      fs.writeFileSync(filepath, req.file.buffer);
+      fileUrl = `/uploads/${filename}`;
+      console.log("File saved to local storage:", fileUrl);
+    }
+
     // Format file size
     const fileSize = (req.file.size / (1024 * 1024)).toFixed(2) + " MB";
 
+    console.log("Creating note in database...");
     // Create note
     const note = await noteModel.create({
       title,
@@ -44,11 +110,13 @@ export const uploadNoteController = async (req, res) => {
       subject,
       branch,
       fileName: req.file.originalname,
-      filePath: req.file.path,
+      fileUrl: fileUrl,
       fileSize,
       uploadedBy: req.user.id,
       uploaderName: req.user.name,
     });
+
+    console.log("Note created successfully:", note._id);
 
     res.status(201).json({
       message: "Note uploaded successfully!",
@@ -56,11 +124,7 @@ export const uploadNoteController = async (req, res) => {
     });
   } catch (error) {
     console.error("Upload error:", error);
-    // Delete uploaded file if database operation fails
-    if (req.file && fs.existsSync(req.file.path)) {
-      fs.unlinkSync(req.file.path);
-    }
-
+    console.error("Error stack:", error.stack);
     res.status(500).json({
       message: "Failed to upload note.",
       error: error.message,
@@ -96,7 +160,7 @@ export const getAllPublicNotesController = async (req, res) => {
     const notes = await noteModel
       .find(filter)
       .sort(sortOptions)
-      .select("-filePath"); // Don't expose file path publicly
+      .select("-fileUrl"); // Don't expose file URL publicly
 
     res.status(200).json({
       message: "Notes retrieved successfully.",
@@ -180,17 +244,32 @@ export const downloadNoteController = async (req, res) => {
       return res.status(404).json({ message: "Note not found." });
     }
 
-    // Check if file exists
-    if (!fs.existsSync(note.filePath)) {
-      return res.status(404).json({ message: "File not found on server." });
+    // Check if user owns this note
+    if (note.uploadedBy.toString() !== req.user.id) {
+      return res.status(403).json({ 
+        message: "You can only download your own notes." 
+      });
     }
 
     // Increment download count
     note.downloads += 1;
     await note.save();
 
-    // Send file
-    res.download(note.filePath, note.fileName);
+    // Check if it's a Cloudinary URL or local file
+    if (note.fileUrl.includes('cloudinary')) {
+      // Redirect to Cloudinary URL
+      res.redirect(note.fileUrl);
+    } else {
+      // Local file - send download
+      const filename = note.fileUrl.split('/').pop();
+      const filepath = path.join(uploadsDir, filename);
+      
+      if (!fs.existsSync(filepath)) {
+        return res.status(404).json({ message: "File not found on server." });
+      }
+      
+      res.download(filepath, note.fileName);
+    }
   } catch (error) {
     res.status(500).json({
       message: "Failed to download note.",
@@ -215,9 +294,28 @@ export const deleteNoteController = async (req, res) => {
       });
     }
 
-    // Delete file from server
-    if (fs.existsSync(note.filePath)) {
-      fs.unlinkSync(note.filePath);
+    // Delete file - check if it's Cloudinary or local
+    if (note.fileUrl.includes('cloudinary')) {
+      // Extract public_id from Cloudinary URL for deletion
+      try {
+        const urlParts = note.fileUrl.split('/');
+        const fileNameWithExtension = urlParts[urlParts.length - 1];
+        const publicId = `knowmint/notes/${fileNameWithExtension.split('.')[0]}`;
+        await cloudinary.uploader.destroy(publicId, { resource_type: 'raw' });
+        console.log("File deleted from Cloudinary");
+      } catch (cloudinaryError) {
+        console.error("Error deleting from Cloudinary:", cloudinaryError);
+        // Continue with database deletion even if Cloudinary deletion fails
+      }
+    } else {
+      // Local file - delete from disk
+      const filename = note.fileUrl.split('/').pop();
+      const filepath = path.join(uploadsDir, filename);
+      
+      if (fs.existsSync(filepath)) {
+        fs.unlinkSync(filepath);
+        console.log("File deleted from local storage");
+      }
     }
 
     // Delete from database
