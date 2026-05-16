@@ -17,6 +17,7 @@ const router = express.Router();
 
 // Public routes (no authentication required)
 router.get("/explore", getAllPublicNotesController);
+router.get("/download/:id", downloadNoteController);
 
 // Protected routes (authentication required)
 router.post(
@@ -45,7 +46,6 @@ router.post(
   uploadNoteController
 );
 router.get("/my-notes", authenticateUser, getUserNotesController);
-router.get("/download/:id", authenticateUser, downloadNoteController);
 router.delete("/:id", authenticateUser, deleteNoteController);
 router.patch("/:id/visibility", authenticateUser, updateNoteVisibilityController);
 router.post("/:id/rate", authenticateUser, rateNoteController);

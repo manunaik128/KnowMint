@@ -180,8 +180,12 @@ export const downloadNoteController = async (req, res) => {
       return res.status(404).json({ message: "Note not found." });
     }
 
+    // Extract filename from the stored path to avoid cross-machine absolute path issues
+    const actualFileName = path.basename(note.filePath);
+    const localFilePath = path.join(process.cwd(), "uploads", actualFileName);
+
     // Check if file exists
-    if (!fs.existsSync(note.filePath)) {
+    if (!fs.existsSync(localFilePath)) {
       return res.status(404).json({ message: "File not found on server." });
     }
 
@@ -190,7 +194,7 @@ export const downloadNoteController = async (req, res) => {
     await note.save();
 
     // Send file
-    res.download(note.filePath, note.fileName);
+    res.download(localFilePath, note.fileName);
   } catch (error) {
     res.status(500).json({
       message: "Failed to download note.",
@@ -216,8 +220,11 @@ export const deleteNoteController = async (req, res) => {
     }
 
     // Delete file from server
-    if (fs.existsSync(note.filePath)) {
-      fs.unlinkSync(note.filePath);
+    const actualFileName = path.basename(note.filePath);
+    const localFilePath = path.join(process.cwd(), "uploads", actualFileName);
+    
+    if (fs.existsSync(localFilePath)) {
+      fs.unlinkSync(localFilePath);
     }
 
     // Delete from database
