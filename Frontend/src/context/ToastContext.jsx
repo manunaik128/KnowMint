@@ -37,5 +37,11 @@ export const useToast = () => {
   if (!context) {
     throw new Error("useToast must be used within ToastProvider");
   }
-  return context;
+  
+  return {
+    success: (message) => context.showToast(message, "success"),
+    error: (message) => context.showToast(message, "error"),
+    info: (message) => context.showToast(message, "info"),
+    warning: (message) => context.showToast(message, "warning"),
+  };
 };

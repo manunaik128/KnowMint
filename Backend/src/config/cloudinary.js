@@ -1,0 +1,21 @@
+import { v2 as cloudinary } from 'cloudinary';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+  timeout: 120000,  
+});
+
+// Log configuration (hide sensitive data)
+console.log("Cloudinary config:", {
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME ? "✓ set" : "✗ missing",
+  api_key: process.env.CLOUDINARY_API_KEY ? "✓ set" : "✗ missing",
+  api_secret: process.env.CLOUDINARY_API_SECRET ? "✓ set" : "✗ missing",
+});
+
+export default cloudinary;

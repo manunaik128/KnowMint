@@ -13,14 +13,13 @@ export const uploadNote = async (formData) => {
   const user = JSON.parse(localStorage.getItem("knowmint_user"));
   const token = user?.token;
   
-  const headers = {
-    "Content-Type": "multipart/form-data",
-  };
+  const headers = {};
   
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
   }
   
+  // Don't set Content-Type header for multipart/form-data - let axios handle it
   return api.post("/upload", formData, { headers });
 };
 

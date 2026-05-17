@@ -10,74 +10,96 @@ const Navbar = () => {
   const { user, logout } = useAuth();
   const { showToast } = useToast();
   const navigate = useNavigate();
+
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = async () => {
-    console.log("Logout clicked");
     await logout();
-    console.log("Logout completed");
     showToast("Logged out successfully", "success");
     setDropdownOpen(false);
-    // Navigate to login page
+    setMenuOpen(false);
     navigate("/login");
   };
 
   return (
-    <div>
-      <div className="nav">
-        <div className="logo">
-          <Link to="/">
-            <img src={Logo} alt="KnowMint logo" />
-          </Link>
-        </div>
-
-        <div className="options">
-          <ul>
-            <Link to="/explore">
-              <li>Explore</li>
-            </Link>
-            <Link to="/notes">
-              <li>My Notes</li>
-            </Link>
-            <Link to="/assistant">
-              <li>Assistant</li>
-            </Link>
-            <Link to="/upload">
-              <li>Upload</li>
-            </Link>
-          </ul>
-
-          {user ? (
-            <div className="profile-menu">
-              <button
-                className="profile-btn"
-                type="button"
-                onClick={() => setDropdownOpen((prev) => !prev)}
-              >
-                <img src={ProfileIcon} alt="Profile" />
-              </button>
-
-              {dropdownOpen && (
-                <div className="profile-dropdown">
-                  <p>Hello {user.name || "Guest"}</p>
-                  <button
-                    className="logout-btn"
-                    type="button"
-                    onClick={handleLogout}
-                  >
-                    Logout
-                  </button>
-                </div>
-              )}
-            </div>
-          ) : (
-            <button id="login-btn">
-              <Link to="/login">Login</Link>
-            </button>
-          )}
-        </div>
+    <nav className="nav">
+      {/* Logo */}
+      <div className="logo">
+        <Link to="/">
+          <img src={Logo} alt="KnowMint logo" />
+        </Link>
       </div>
-    </div>
+
+      {/* Hamburger */}
+      <div
+        className={`hamburger ${menuOpen ? "active" : ""}`}
+        onClick={() => setMenuOpen(!menuOpen)}
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      {/* Menu */}
+      <div className={`options ${menuOpen ? "open" : ""}`}>
+        <ul>
+          <li>
+            <Link to="/explore" onClick={() => setMenuOpen(false)}>
+              Explore
+            </Link>
+          </li>
+
+          <li>
+            <Link to="/notes" onClick={() => setMenuOpen(false)}>
+              My Notes
+            </Link>
+          </li>
+
+          <li>
+            <Link to="/assistant" onClick={() => setMenuOpen(false)}>
+              Assistant
+            </Link>
+          </li>
+
+          <li>
+            <Link to="/upload" onClick={() => setMenuOpen(false)}>
+              Upload
+            </Link>
+          </li>
+        </ul>
+
+        {user ? (
+          <div className="profile-menu">
+            <button
+              className="profile-btn"
+              type="button"
+              onClick={() => setDropdownOpen((prev) => !prev)}
+            >
+              <img src={ProfileIcon} alt="Profile" />
+            </button>
+
+            {dropdownOpen && (
+              <div className="profile-dropdown">
+                <p>Hello {user.name || "Guest"}</p>
+
+                <button
+                  className="logout-btn"
+                  type="button"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
+        ) : (
+          <Link to="/login">
+            <button id="login-btn">Login</button>
+          </Link>
+        )}
+      </div>
+    </nav>
   );
 };
 
