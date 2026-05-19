@@ -16,7 +16,7 @@ export const getNoteSummaryController = async (req, res) => {
     }
 
     // Check if user has access (either owner or public note)
-    if (!note.isPublic && note.uploadedBy.toString() !== req.user.id) {
+    if (!note.isPublic && note.uploadedBy.toString() !== req.user.id.toString()) {
       return res.status(403).json({ message: "You don't have access to this note." });
     }
 
@@ -70,7 +70,7 @@ export const askNoteQuestionController = async (req, res) => {
     }
 
     // Check if user has access
-    if (!note.isPublic && note.uploadedBy.toString() !== req.user.id) {
+    if (!note.isPublic && note.uploadedBy.toString() !== req.user.id.toString()) {
       return res.status(403).json({ message: "You don't have access to this note." });
     }
 

@@ -110,9 +110,7 @@ const UploadNotes = () => {
         fileInputRef.current.value = "";
       }
       
-      console.log("Form reset complete, navigating to /notes");
-      // Navigate to My Notes page with refresh signal
-      navigate("/notes", { state: { refresh: Date.now() } });
+      console.log("Form reset complete");
     } catch (error) {
       console.error("Upload error:", error);
       console.error("Error response:", error.response);

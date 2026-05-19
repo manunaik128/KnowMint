@@ -35,33 +35,7 @@ export const authenticateUser = async (req, res, next) => {
     console.log("User authenticated:", req.user);
     next();
   } catch (error) {
-    // If JWT verification fails with our secret, it might be a Clerk token
-    // For Clerk tokens, we'll try to decode without verification to get user info
-    try {
-      const decoded = jwt.decode(token);
-      
-      if (decoded && (decoded.sub || decoded.email)) {
-        // This is a Clerk token - find or create user based on Clerk ID
-        let user = await userModel.findOne({ clerkId: decoded.sub });
-        
-        if (!user) {
-          // Create user if doesn't exist
-          user = await userModel.create({
-            name: decoded.name || decoded.email?.split('@')[0] || 'User',
-            email: decoded.email || `${decoded.sub}@clerk.temp`,
-            password: 'clerk-authenticated', // Placeholder password
-            clerkId: decoded.sub,
-          });
-        }
-        
-        req.user = { id: user._id, email: user.email, name: user.name };
-        console.log("Clerk user authenticated:", req.user);
-        return next();
-      }
-    } catch (clerkError) {
-      console.log("Not a valid Clerk token either");
-    }
-    
+    console.log("JWT verification failed:", error.message);
     res.status(401).json({ message: "Invalid or expired token.", error: error.message });
   }
 };
