@@ -4,6 +4,7 @@ import "../styles/Login.css";
 import Email from "../assets/email.png";
 import Lock from "../assets/lock.png";
 import Google from "../assets/google.png";
+import User from "../assets/user.png";
 import Facebook from "../assets/facebook.png";
 import { loginUser, registerUser } from "../services/authService.js";
 import { useAuth } from "../context/AuthContext.jsx";
@@ -93,7 +94,7 @@ const Login = () => {
               <label>Name</label>
               <div className="input-box">
                 <div className="icon-box">
-                  <img src={Google} alt="Name icon" />
+                  <img src={User} alt="Name icon" />
                 </div>
                 <input
                   name="name"
