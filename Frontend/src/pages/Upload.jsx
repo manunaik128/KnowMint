@@ -179,6 +179,9 @@ const UploadNotes = () => {
                   <option>1st Semester</option>
                   <option>2nd Semester</option>
                   <option>3rd Semester</option>
+                  <option>4rd Semester</option>
+                  <option>5rd Semester</option>
+                  <option>6rd Semester</option>
                 </select>
               </div>
 
@@ -193,6 +196,9 @@ const UploadNotes = () => {
                   <option>Java</option>
                   <option>DBMS</option>
                   <option>C</option>
+                  <option>PHP</option>
+                  <option>Artificial Intelligence</option>
+                  <option>FDS</option>
                 </select>
               </div>
 

@@ -193,6 +193,53 @@ export const getNoteByIdController = async (req, res) => {
 };
 
 // Download a note
+const streamFileFromUrl = (fileUrl, res, fileName, redirectsLeft = 3) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = new URL(fileUrl);
+      const client = url.protocol === 'http:' ? http : https;
+
+      const request = client.get(url, (cloudinaryRes) => {
+        const { statusCode, headers } = cloudinaryRes;
+
+        if (statusCode >= 300 && statusCode < 400 && headers.location) {
+          if (redirectsLeft <= 0) {
+            return reject(new Error('Too many redirects when fetching file.'));
+          }
+          const nextUrl = headers.location.startsWith('http') ? headers.location : `${url.protocol}//${url.host}${headers.location}`;
+          cloudinaryRes.resume();
+          return resolve(streamFileFromUrl(nextUrl, res, fileName, redirectsLeft - 1));
+        }
+
+        if (statusCode >= 400) {
+          let errorData = '';
+          cloudinaryRes.on('data', (chunk) => {
+            errorData += chunk.toString();
+          });
+          cloudinaryRes.on('end', () => {
+            reject(new Error(`Failed to fetch file from storage. HTTP ${statusCode}: ${errorData}`));
+          });
+          return;
+        }
+
+        res.setHeader('Content-Type', headers['content-type'] || 'application/pdf');
+        res.setHeader('Content-Disposition', `attachment; filename="${fileName || 'note.pdf'}"`);
+        if (headers['content-length']) {
+          res.setHeader('Content-Length', headers['content-length']);
+        }
+
+        cloudinaryRes.pipe(res);
+        cloudinaryRes.on('end', resolve);
+        cloudinaryRes.on('error', reject);
+      });
+
+      request.on('error', reject);
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
 export const downloadNoteController = async (req, res) => {
   try {
     const note = await noteModel.findById(req.params.id);
@@ -207,18 +254,16 @@ export const downloadNoteController = async (req, res) => {
     note.downloads += 1;
     await note.save();
 
-    // Proxy the file from Cloudinary to avoid CORS issues with frontend axios calls
-    https.get(note.fileUrl, (cloudinaryRes) => {
-      res.setHeader('Content-Type', cloudinaryRes.headers['content-type'] || 'application/pdf');
-      res.setHeader('Content-Disposition', `attachment; filename="${note.fileName || 'note.pdf'}"`);
-      
-      cloudinaryRes.pipe(res);
-    }).on('error', (err) => {
-      console.error("Cloudinary download stream error:", err);
-      res.status(500).json({ message: "Failed to stream file from storage." });
-    });
+    if (!note.fileUrl) {
+      return res.status(500).json({ message: 'Note file URL is missing.' });
+    }
+
+    await streamFileFromUrl(note.fileUrl, res, note.fileName);
   } catch (error) {
-    res.status(500).json({ message: "Failed to download note.", error: error.message });
+    console.error('Download note error:', error);
+    if (!res.headersSent) {
+      res.status(500).json({ message: "Failed to download note.", error: error.message });
+    }
   }
 };
 
