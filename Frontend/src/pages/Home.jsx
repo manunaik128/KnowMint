@@ -53,7 +53,7 @@ const Home = () => {
                   <span id="icon-details">Smart search and filters</span>
                 </div>
               </div>
-              <div className="share">
+              <div className="share-text">
                 <div className="text-icon">
                   <img src={Access} alt="" />
                 </div>

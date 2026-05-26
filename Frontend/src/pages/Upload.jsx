@@ -199,6 +199,7 @@ const UploadNotes = () => {
                   <option>PHP</option>
                   <option>Artificial Intelligence</option>
                   <option>FDS</option>
+                  <option>CS</option>
                 </select>
               </div>
 
@@ -211,7 +212,11 @@ const UploadNotes = () => {
                   <option value="">Branch</option>
                   <option>BCA</option>
                   <option>BSC</option>
-                  <option>CS</option>
+                  <option>BBA</option>
+                  <option>B.COM</option>
+                  <option>CS IT</option>
+            
+                  
                 </select>
               </div>
 

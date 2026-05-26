@@ -86,8 +86,9 @@
 
 .subjects,
 .search,
-.share,
+.share-text,
 .access {
+  /* background-color: gray; */
   display: flex;
   gap: 16px;
   align-items: center;
