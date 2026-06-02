@@ -73,9 +73,9 @@ const Notes = () => {
       link.click();
       link.remove();
       
-      toast.success("Download started!");
+      toast.success("📥 Download started!");
     } catch (error) {
-      toast.error("Failed to download note.");
+      toast.error("Failed to download note. Please try again.");
     }
   };
 
@@ -88,7 +88,7 @@ const Notes = () => {
 
     try {
       await deleteNote(noteId);
-      toast.success("Note deleted successfully!");
+      toast.success("🗑️ Note deleted successfully!");
       fetchNotes(); // Refresh the list
     } catch (error) {
       toast.error("Failed to delete note. Please try again.");
@@ -142,8 +142,6 @@ const Notes = () => {
           <option value="4th Semester">4th Semester</option>
           <option value="5th Semester">5th Semester</option>
           <option value="6th Semester">6th Semester</option>
-          <option value="7th Semester">7th Semester</option>
-          <option value="8th Semester">8th Semester</option>
         </select>
 
         <select 
@@ -152,14 +150,19 @@ const Notes = () => {
         >
           <option value="">Subject</option>
           <option value="Python">Python</option>
+          <option value="PHP">PHP</option>
+          <option value="Artificial Intelligence">Artificial Intelligence</option>
           <option value="Java">Java</option>
           <option value="DBMS">DBMS</option>
+          <option value="Kannada">Kannada</option>
+          <option value="English">English</option>
           <option value="C">C</option>
           <option value="Data Structures">Data Structures</option>
           <option value="Algorithms">Algorithms</option>
           <option value="Chemistry">Chemistry</option>
           <option value="Physics">Physics</option>
           <option value="Mathematics">Mathematics</option>
+          <option value="Physics">Physics</option>
         </select>
 
         <select 

@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState, useCallback } from "react";
 import { fetchProfile, logoutUser } from "../services/authService.js";
 
 const AuthContext = createContext(null);
@@ -36,14 +36,14 @@ export const AuthProvider = ({ children }) => {
     }
   }, [user]);
 
-  const login = (profile, token) => {
+  const login = useCallback((profile, token) => {
     console.log("AuthContext - Login called with:", { profile, token });
     const userData = { ...profile, token };
     setUser(userData);
     localStorage.setItem("knowmint_user", JSON.stringify(userData));
-  };
+  }, []);
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
     console.log("AuthContext - Logout called");
     try {
       await logoutUser();
@@ -56,11 +56,11 @@ export const AuthProvider = ({ children }) => {
       localStorage.removeItem("knowmint_user");
       console.log("AuthContext - Local data cleared");
     }
-  };
+  }, []);
 
   const value = useMemo(
     () => ({ user, loading, login, logout }),
-    [user, loading],
+    [user, loading, login, logout],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

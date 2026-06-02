@@ -8,7 +8,7 @@ import { useToast } from "../context/ToastContext.jsx";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
-  const { showToast } = useToast();
+  const toast = useToast();
   const navigate = useNavigate();
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -16,10 +16,15 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     await logout();
-    showToast("Logged out successfully", "success");
+    toast.success("Logged out successfully 👋");
     setDropdownOpen(false);
     setMenuOpen(false);
     navigate("/login");
+  };
+
+  const handleNavClick = (path) => {
+    setMenuOpen(false);
+    navigate(path);
   };
 
   return (

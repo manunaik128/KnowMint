@@ -45,9 +45,9 @@ function Explore() {
       link.click();
       link.remove();
       
-      toast.success("Download started!");
+      toast.success("📥 Download started!");
     } catch (error) {
-      toast.error("Failed to download note.");
+      toast.error("Failed to download note. Please try again.");
     }
   };
 

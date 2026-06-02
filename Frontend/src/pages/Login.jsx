@@ -17,7 +17,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { login } = useAuth();
-  const { showToast } = useToast();
+  const toast = useToast();
 
   const toggleMode = () => {
     setIsSignup((prev) => !prev);
@@ -56,7 +56,7 @@ const Login = () => {
       if (profile) {
         console.log("Calling login function with:", { profile, token });
         login(profile, token);
-        showToast(isSignup ? "Signup successful" : "Login successful", "success");
+        toast.success(isSignup ? "Signup successful! 🎉" : "Login successful! 🎉");
         
         // Redirect after successful login
         setTimeout(() => {
@@ -68,7 +68,7 @@ const Login = () => {
       console.error("Login error:", error);
       console.error("Error response:", error.response?.data);
       const errorMessage = error.response?.data?.message || "Unable to authenticate. Please try again.";
-      showToast(errorMessage, "error");
+      toast.error(errorMessage);
       setMessage(errorMessage);
     } finally {
       setLoading(false);

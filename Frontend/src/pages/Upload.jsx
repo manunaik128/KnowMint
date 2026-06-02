@@ -139,6 +139,8 @@ const UploadNotes = () => {
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
+      
+      toast.info("Form cleared ✨");
     }
   };
 
@@ -179,9 +181,9 @@ const UploadNotes = () => {
                   <option>1st Semester</option>
                   <option>2nd Semester</option>
                   <option>3rd Semester</option>
-                  <option>4rd Semester</option>
-                  <option>5rd Semester</option>
-                  <option>6rd Semester</option>
+                  <option>4th Semester</option>
+                  <option>5th Semester</option>
+                  <option>6th Semester</option>
                 </select>
               </div>
 
@@ -195,11 +197,15 @@ const UploadNotes = () => {
                   <option>Python</option>
                   <option>Java</option>
                   <option>DBMS</option>
-                  <option>C</option>
                   <option>PHP</option>
                   <option>Artificial Intelligence</option>
                   <option>FDS</option>
                   <option>CS</option>
+                  <option>Kannada</option>
+                  <option>English</option>
+                  <option>Software engineering</option>
+                  <option>Mathematics</option>
+                  <option>Physics</option>
                 </select>
               </div>
 

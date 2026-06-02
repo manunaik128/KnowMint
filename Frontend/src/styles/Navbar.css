@@ -11,13 +11,25 @@
   align-items: center;
   padding: 10px 50px;
   justify-content: space-between;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid #e0e0e0;
   box-sizing: border-box;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease;
+}
+
+.nav:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .logo img{
   width: 140px;
   height: auto;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.logo img:hover {
+  transform: scale(1.05);
 }
 
 .hamburger {
@@ -63,19 +75,41 @@
   display: flex;
   gap: 20px;
   list-style: none;
-  font-size: 20px;
+  font-size: 18px;
   margin: 0;
   padding: 0;
   flex-wrap: wrap;
+}
+
+.options ul li a {
+  text-decoration: none;
+  color: #333;
+  transition: color 0.3s ease, border-bottom 0.3s ease;
+  padding-bottom: 5px;
+  border-bottom: 2px solid transparent;
+}
+
+.options ul li a:hover {
+  color: #20c997;
+  border-bottom-color: #20c997;
 }
 
 #login-btn{
   padding: 10px 30px;
   border-radius: 25px;
   border: none;
-  background-color: aquamarine;
+  background-color: #20c997;
   cursor: pointer;
   white-space: nowrap;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  color: white;
+}
+
+#login-btn:hover {
+  background-color: #1aa179;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(32, 201, 151, 0.3);
 }
 
 .profile-menu {
@@ -83,18 +117,24 @@
 }
 
 .profile-btn {
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  border: none;
+  border: 2px solid #20c997;
   background-color: transparent;
   padding: 0;
   cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.profile-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(32, 201, 151, 0.3);
 }
 
 .profile-btn img {
-  width: 34px;
-  height: 34px;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   object-fit: cover;
 }
@@ -106,16 +146,29 @@
   width: 180px;
   padding: 14px;
   background: white;
-  border: 1px solid #ccc;
+  border: 1px solid #e0e0e0;
   border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
   z-index: 10;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .profile-dropdown p {
   margin: 0 0 10px;
   font-size: 14px;
   font-weight: 600;
+  color: #333;
 }
 
 .logout-btn {
@@ -126,6 +179,14 @@
   background-color: #ff6565;
   color: white;
   cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.logout-btn:hover {
+  background-color: #ff4444;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 101, 101, 0.3);
 }
 
 

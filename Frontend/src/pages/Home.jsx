@@ -1,6 +1,6 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/Home.css";
-import Back from "../assets/back.png";
 import Access from "../assets/access.png";
 import Hand from "../assets/hand.png";
 import Tick from "../assets/tick.png";
@@ -10,6 +10,8 @@ import Explore from "../assets/explore.png";
 import File from "../assets/file.png";
 
 const Home = () => {
+  const navigate = useNavigate();
+
   return (
     <div>
       <div className="home">
@@ -29,8 +31,8 @@ const Home = () => {
               </p>
             </div>
             <div className="btns">
-              <button id="upload">Upload Notes</button>
-              <button id="upload">Explore Liabrary</button>
+              <button className="home-btn" type="button" onClick={() => navigate("/upload")}>Upload Notes</button>
+              <button className="home-btn" type="button" onClick={() => navigate("/explore")}>Explore Library</button>
             </div>
           </div>
 
@@ -84,7 +86,7 @@ const Home = () => {
               <p id="paragraphs">
                 Lorem ipsum dolor sit amet consectetur 
               </p> <br />
-              <button id="upload">Upload Notes</button>
+              <button className="home-btn" type="button" onClick={() => navigate("/upload")}>Upload Notes</button>
             </div>
             
 
@@ -100,7 +102,7 @@ const Home = () => {
               <p id="paragraphs">
                 Lorem ipsum dolor sit amet consectetur 
               </p> <br />
-              <button id="upload">Open Notes</button>
+              <button className="home-btn" type="button" onClick={() => navigate("/notes")}>Open Notes</button>
             </div>
           </div>
 
@@ -114,7 +116,7 @@ const Home = () => {
               <p id="paragraphs">
                 Lorem ipsum dolor sit amet consectetur 
               </p> <br />
-              <button id="upload">Start Exploring</button>
+              <button className="home-btn" type="button" onClick={() => navigate("/explore")}>Start Exploring</button>
             </div>
             
 
