@@ -84,7 +84,7 @@ const Home = () => {
             <div className="upload-text">
               <h3>Upload</h3> <br />
               <p id="paragraphs">
-                Lorem ipsum dolor sit amet consectetur 
+               Upload your notes, assignments, and study materials securely to help fellow students learn and grow.
               </p> <br />
               <button className="home-btn" type="button" onClick={() => navigate("/upload")}>Upload Notes</button>
             </div>
@@ -100,7 +100,7 @@ const Home = () => {
             <div className="upload-text">
               <h3>My notes</h3> <br />
               <p id="paragraphs">
-                Lorem ipsum dolor sit amet consectetur 
+                Access, manage, and organize all your uploaded notes in one place anytime, anywhere.
               </p> <br />
               <button className="home-btn" type="button" onClick={() => navigate("/notes")}>Open Notes</button>
             </div>
@@ -114,7 +114,7 @@ const Home = () => {
             <div className="upload-text">
               <h3>Explore</h3> <br />
               <p id="paragraphs">
-                Lorem ipsum dolor sit amet consectetur 
+                Discover notes, study resources, and learning materials shared by students across different subjects.
               </p> <br />
               <button className="home-btn" type="button" onClick={() => navigate("/explore")}>Start Exploring</button>
             </div>
